@@ -12,9 +12,13 @@ pipeline {
         //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
       }
     }
+    stage('Check Workspace') {
+            steps {
+                sh 'ls -R'
+            }
+        }
     stage('Build and Test') {
       steps {
-        sh 'ls -R'
         sh 'mvn -version'
         sh 'ls -ltr'
         // build the project and create a JAR file
