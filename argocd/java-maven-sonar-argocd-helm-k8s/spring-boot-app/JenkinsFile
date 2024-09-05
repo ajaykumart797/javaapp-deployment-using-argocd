@@ -3,7 +3,9 @@ pipeline {
     docker {
        //image 'abhishekf5/maven-abhishek-docker-agent:v1'
       image 'abhishek976772/maven-abhishek-docker-agent:v2'
-      args '-d -u root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+      //args '-d -u root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+      args '--entrypoint="" -u root -v /var/run/docker.sock:/var/run/docker.sock'
+
     }
   }
   stages {
