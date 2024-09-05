@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'abhishek976772/maven-abhishek-docker-agent:v2'
+      image 'abhishek976772/maven-abhishek-docker-agent:v3'
       args '--entrypoint="" -u root -v /var/run/docker.sock:/var/run/docker.sock'
     }
   }
