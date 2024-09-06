@@ -67,8 +67,6 @@ pipeline {
           sh '''
             echo "Current directory: $(pwd)"
             ls -la
-            //sh 'cd argocd/java-maven-sonar-argocd-helm-k8s'
-            echo "ACurrent directory: $(pwd)"
             git config user.email "abc123@gmail.com"
             git config user.name "abc123"
             BUILD_NUMBER=${BUILD_NUMBER}
