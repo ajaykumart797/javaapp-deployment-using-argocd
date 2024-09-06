@@ -18,6 +18,18 @@ pipeline {
         sh 'ls -R'
       }
     }
+    stage('Initialize Git') {
+      steps {
+        dir('/var/lib/jenkins/workspace/Argocd_pipeline') {
+          sh '''
+            if [ ! -d ".git" ]; then
+              git init
+              git remote add origin https://github.com/ajaykumart797/Ultimate_CI-CD_pipeline
+            fi
+          '''
+        }
+      }
+    }
     stage('Build and Test') {
       steps {
         // Debug step to check Java version
