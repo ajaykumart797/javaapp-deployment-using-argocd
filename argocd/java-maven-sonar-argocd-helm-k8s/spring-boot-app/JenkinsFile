@@ -76,17 +76,19 @@ pipeline {
       }
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-          sh '''
-            echo "Current directory: $(pwd)"
-            ls -la
-            git config user.email "abc123@gmail.com"
-            git config user.name "abc123"
-            BUILD_NUMBER=${BUILD_NUMBER}
-            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-            git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-            git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-            git push https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} HEAD:main
-          '''
+          dir('/var/lib/jenkins/workspace/Argocd_pipeline') {
+            sh '''
+              echo "Current directory: $(pwd)"
+              ls -la
+              git config user.email "abc123@gmail.com"
+              git config user.name "abc123"
+              BUILD_NUMBER=${BUILD_NUMBER}
+              sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+              git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+              git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+              git push https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} HEAD:main
+            '''
+          }
         }
       }
     }
