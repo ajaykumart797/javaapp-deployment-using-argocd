@@ -27,6 +27,7 @@ pipeline {
         // Debug step to print current working directory
         sh 'pwd'
         // Build the project and create a JAR file
+        sh 'docker -version'
         sh 'cd argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
       }
     }
