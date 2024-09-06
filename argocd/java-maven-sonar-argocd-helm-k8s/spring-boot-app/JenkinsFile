@@ -1,7 +1,8 @@
 pipeline {
   agent {
     docker {
-      image 'abhishek976772/maven-abhishek-docker-agent:v4'
+      //image 'abhishek976772/maven-abhishek-docker-agent:v4'
+      image 'abhishek976772/spring-boot-app:v4'
       args '--entrypoint="" -u root -v /var/run/docker.sock:/var/run/docker.sock'
     }
   }
