@@ -62,36 +62,36 @@ pipeline {
       }
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-          sh '''
-            echo "beforeCurrent directory: $(pwd)"
-            cd argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests
-            echo "Current directory after cd: $(pwd)"
-            ls -la
-            # Check if .git directory exists
-            if [ -d ".git" ]; then
-              echo ".git directory exists"
-            else
-              echo ".git directory does not exist, initializing Git repository"
-              git init
-            fi
-            # Verify .git directory exists after initialization
-            if [ -d ".git" ]; then
-              echo ".git directory exists after initialization"
-            else
-              echo "Failed to initialize .git directory"
-              exit 1
-            fi
-            # Ensure all Git commands are executed within the correct directory
-            echo "Configuring Git user email and name"
-            git config --local user.email "abc123@gmail.com"
-            git config --local user.name "abc123"
-            echo "Git user email and name configured"
-            BUILD_NUMBER=${BUILD_NUMBER}
-            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml
-            git add deployment.yml
-            git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-            git push https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} HEAD:main
-          '''
+          dir('argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests') {
+            sh '''
+              echo "Current directory: $(pwd)"
+              ls -la
+              # Check if .git directory exists
+              if [ -d ".git" ]; then
+                echo ".git directory exists"
+              else
+                echo ".git directory does not exist, initializing Git repository"
+                git init
+              fi
+              # Verify .git directory exists after initialization
+              if [ -d ".git" ]; then
+                echo ".git directory exists after initialization"
+              else
+                echo "Failed to initialize .git directory"
+                exit 1
+              fi
+              # Ensure all Git commands are executed within the correct directory
+              echo "Configuring Git user email and name"
+              git config user.email "abc123@gmail.com"
+              git config user.name "abc123"
+              echo "Git user email and name configured"
+              BUILD_NUMBER=${BUILD_NUMBER}
+              sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml
+              git add deployment.yml
+              git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+              git push https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} HEAD:main
+            '''
+          }
         }
       }
     }
