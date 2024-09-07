@@ -63,7 +63,7 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
-            cd Ultimate_CI-CD_pipeline
+            sh 'cd argocd'
             echo "Current directory: $(pwd)"
             ls -la
             git config user.email "abc123@gmail.com"
