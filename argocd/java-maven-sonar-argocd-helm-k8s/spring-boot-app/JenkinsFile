@@ -86,7 +86,7 @@ pipeline {
               echo "Git user email and name configured"
               git config --global --add safe.directory /var/lib/jenkins/workspace/pipelineazure/argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests
               BUILD_NUMBER=${BUILD_NUMBER}
-              sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml
+              sed -i "s/image: abhishekf5\\/ultimate-cicd:.*/image: abhishekf5\\/ultimate-cicd:${BUILD_NUMBER}/g" deployment.yml
               git add deployment.yml
               git commit -m "Update deployment image to version ${BUILD_NUMBER}"
               git pull https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} main --rebase
