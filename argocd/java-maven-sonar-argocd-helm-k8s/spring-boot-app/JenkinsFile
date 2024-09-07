@@ -87,11 +87,16 @@ pipeline {
               git config --global --add safe.directory /var/lib/jenkins/workspace/Argocd_pipeline/argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests
               BUILD_NUMBER=${BUILD_NUMBER}
               sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml
-              git config --add safe.directory /var/lib/jenkins/workspace/pipelineazure/argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests
-              git add deployment.yml
-              git commit --only deployment.yml -m "Update deployment image to version ${BUILD_NUMBER}"
-              git pull https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} main --rebase
-              git push https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} HEAD:main
+              if [ -d ".git" ]; then
+                git config --add safe.directory /var/lib/jenkins/workspace/pipelineazure/argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests
+                git add deployment.yml
+                git commit --only deployment.yml -m "Update deployment image to version ${BUILD_NUMBER}"
+                git pull https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} main --rebase
+                git push https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} HEAD:main
+              else
+                echo "Not in a Git directory"
+                exit 1
+              fi
             '''
           }
         }
