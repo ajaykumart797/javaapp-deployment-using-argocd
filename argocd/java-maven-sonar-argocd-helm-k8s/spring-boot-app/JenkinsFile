@@ -81,14 +81,14 @@ pipeline {
                 exit 1
               fi
               echo "Configuring Git user email and name"
-              git -C $(pwd) config user.email "abc123@gmail.com"
-              git -C $(pwd) config user.name "abc123"
+              git config --global user.email "abc123@gmail.com"
+              git config --global user.name "abc123"
               echo "Git user email and name configured"
               BUILD_NUMBER=${BUILD_NUMBER}
               sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml
-              git -C $(pwd) add deployment.yml
-              git -C $(pwd) commit -m "Update deployment image to version ${BUILD_NUMBER}"
-              git -C $(pwd) push https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} HEAD:main
+              git add deployment.yml
+              git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+              git push https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} HEAD:main
             '''
           }
         }
