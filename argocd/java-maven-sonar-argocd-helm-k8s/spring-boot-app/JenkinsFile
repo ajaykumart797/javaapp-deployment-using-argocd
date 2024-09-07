@@ -64,7 +64,6 @@ pipeline {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
             echo "beforeCurrent directory: $(pwd)"
-            cd argocd
             echo "Current directory: $(pwd)"
             ls -la
             git config user.email "abc123@gmail.com"
