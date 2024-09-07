@@ -64,17 +64,21 @@ pipeline {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
             echo "beforeCurrent directory: $(pwd)"
+            cd argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests
             echo "Current directory: $(pwd)"
             ls -la
-            # Initialize Git repository if not already initialized
-            if [ ! -d ".git" ]; then
+            # Check if .git directory exists
+            if [ -d ".git" ]; then
+              echo ".git directory exists"
+            else
+              echo ".git directory does not exist, initializing Git repository"
               git init
             fi
             git config user.email "abc123@gmail.com"
             git config user.name "abc123"
             BUILD_NUMBER=${BUILD_NUMBER}
-            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-            git add argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml
+            git add deployment.yml
             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
             git push https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} HEAD:main
           '''
