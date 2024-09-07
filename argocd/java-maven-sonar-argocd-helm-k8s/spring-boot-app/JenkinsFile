@@ -8,8 +8,9 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        sh 'echo passed'
-        git branch: 'main', url: 'https://github.com/ajaykumart797/Ultimate_CI-CD_pipeline.git'
+       sh '''
+            git clone https://github.com/ajaykumart797/Ultimate_CI-CD_pipeline.git
+          '''
       }
     }
     stage('Check Workspace') {
