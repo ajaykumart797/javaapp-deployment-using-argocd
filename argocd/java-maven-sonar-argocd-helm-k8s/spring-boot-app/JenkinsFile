@@ -60,10 +60,10 @@ pipeline {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
             cd ${GIT_REPO_NAME}
-            git config user.email "abc123@gmail.com"
-            git config user.name "abc123"
+            git config user.email "ajaykumart797@gmail.com"
+            git config user.name "ajaykumart797"
             BUILD_NUMBER=${BUILD_NUMBER}
-            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+            sed -i "s/abhishekf5\\/ultimate-cicd:[0-9]*/abhishekf5\\/ultimate-cicd:${BUILD_NUMBER}/g" argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
             git add argocd/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
             git push https://${GITHUB_TOKEN}@github.com/${GIT_user}/${GIT_REPO_NAME} HEAD:main
