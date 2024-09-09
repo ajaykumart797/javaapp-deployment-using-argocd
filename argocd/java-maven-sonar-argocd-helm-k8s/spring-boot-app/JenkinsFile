@@ -67,13 +67,15 @@ pipeline {
   }
   post {
     always {
-      script {
-        def containerId = 'b5c27900f53e'
-        def isRunning = sh(script: "docker inspect -f '{{.State.Running}}' ${containerId}", returnStdout: true).trim()
-        if (isRunning == 'false') {
-          sh "docker start ${containerId}"
+      node {
+        script {
+          def containerId = 'b5c27900f53e'
+          def isRunning = sh(script: "docker inspect -f '{{.State.Running}}' ${containerId}", returnStdout: true).trim()
+          if (isRunning == 'false') {
+            sh "docker start ${containerId}"
+          }
+          sh "docker top ${containerId} -eo pid,comm"
         }
-        sh "docker top ${containerId} -eo pid,comm"
       }
     }
   }
